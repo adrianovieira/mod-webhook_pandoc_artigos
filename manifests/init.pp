@@ -1,4 +1,7 @@
-class webhook_pandoc_artigos {
+class webhook_pandoc_artigos (
+        Boolean $webhook_wsgi_replace = false,
+        )
+{
   # http: WEBHOOK
   include apache
   include 'apache::mod::wsgi'
@@ -22,12 +25,12 @@ class webhook_pandoc_artigos {
   file { "webhook_hello":
     path => '/var/www/webhook/webhook.wsgi',
     content => '# -*- coding: utf-8 -*-
-import os
+import os, time
 def application(environ, start_response):
     status = "200 OK"
     output = "Olá, Webhook em "+ os.uname()[1] +"! <br /><small>"+time.strftime("%d/%h/%Y %H:%M:%S")+"</small>"
 
-    response_headers = [("Content-type", "text/plain"),
+    response_headers = [("Content-type", "text/html"),
                         ("Content-Length", str(len(output)))]
     start_response(status, response_headers)
 
