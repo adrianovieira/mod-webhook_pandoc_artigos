@@ -25,7 +25,7 @@ class webhook_pandoc_artigos {
 import os
 def application(environ, start_response):
     status = "200 OK"
-    output = "Olá, Webhook em "+ os.uname()[1] +"! <br /><small>"+time.strftime("%d/%h/%Y %H/%M")+"</small>"
+    output = "Olá, Webhook em "+ os.uname()[1] +"! <br /><small>"+time.strftime("%d/%h/%Y %H:%M:%S")+"</small>"
 
     response_headers = [("Content-type", "text/plain"),
                         ("Content-Length", str(len(output)))]
