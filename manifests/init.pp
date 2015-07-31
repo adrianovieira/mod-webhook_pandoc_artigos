@@ -1,4 +1,4 @@
-class webhook_pandoc_artigos (
+class dtp_webhook_pandoc_artigos (
         $webhook_wsgi_replace = false
         )
 {
