@@ -1,5 +1,5 @@
 class webhook_pandoc_artigos (
-        Boolean $webhook_wsgi_replace = false,
+        $webhook_wsgi_replace = false
         )
 {
   # http: WEBHOOK
@@ -22,9 +22,10 @@ class webhook_pandoc_artigos (
     wsgi_script_aliases         => { '/' => '/var/www/webhook/webhook.wsgi' },
   }
 
-  file { "webhook_hello":
-    path => '/var/www/webhook/webhook.wsgi',
-    content => '# -*- coding: utf-8 -*-
+  if $webhook_wsgi_replace {
+     file { "webhook_hello":
+       path => '/var/www/webhook/webhook.wsgi',
+       content => '# -*- coding: utf-8 -*-
 import os, time
 def application(environ, start_response):
     status = "200 OK"
@@ -37,6 +38,7 @@ def application(environ, start_response):
     return [output]
 
         ',
+     }
   }
 
 }
