@@ -19,6 +19,23 @@ class webhook_pandoc_artigos {
     wsgi_script_aliases         => { '/' => '/var/www/webhook/webhook.wsgi' },
   }
 
+  file { "webhook_hello":
+    path => '/var/www/webhook/webhook.wsgi',
+    content => '# -*- coding: utf-8 -*-
+import os
+def application(environ, start_response):
+    status = "200 OK"
+    output = "Olá, Webhook em "+ os.uname()[1] +"! <br /><small>"+time.strftime("%d/%h/%Y %H/%M")+"</small>"
+
+    response_headers = [("Content-type", "text/plain"),
+                        ("Content-Length", str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output]
+
+        ',
+  }
+
 }
 
 
