@@ -1,0 +1,119 @@
+mod 'apt',
+  :git => 'git@www-git.prevnet:/puppet/mod-puppetlabs-apt.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'archive',
+  :git => 'git@www-git.prevnet:puppet/puppet-archive.git',
+  :ref => 'dtp-0.3.5'
+
+mod 'concat',
+  :git => 'git@www-git.prevnet:/puppet/mod-puppetlabs-concat.git',
+  :ref => 'dtp-1.2.2'
+
+mod 'concat_native',
+  :git => 'git@www-git.prevnet:/puppet/mod-theforeman-concat_native.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'datacat',
+  :git => 'git@www-git.prevnet:/puppet/mod-richardc-datacat.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'dtp_dnsclient',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_dnsclient.git',
+  :ref => 'dtp-1.0.2'
+
+mod 'dtp_java',
+  :git => 'git@www-git.prevnet:puppet/mod-dtp_java.git',
+  :ref => 'dtp-1.1.1'
+
+mod 'dtp_ldapclient',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_ldapclient.git',
+  :ref => 'dtp-1.2.2'
+
+mod 'dtp_ntp',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_ntp.git',
+  :ref => 'dtp-2.0.1'
+
+mod 'dtp_pamlimits',
+  :git => 'git@www-git.prevnet:puppet/mod-dtp_pamlimits.git',
+  :ref => 'dtp-1.2.1'
+
+mod 'dtp_repositorios',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_repositorios.git',
+  :ref => 'dtp-1.3.3'
+
+mod 'dtp_so',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_so.git',
+  :ref => 'dtp-1.1.9'
+
+mod 'dtp_ssh',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_ssh.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'dtp_sudo',
+  :git => 'git@www-git.prevnet:/puppet/mod-dtp_sudo.git',
+  :ref => 'dtp-1.2.2'
+
+mod 'easy_type',
+  :git => 'git@www-git.prevnet:puppet/easy_type.git',
+  :ref => 'dtp-0.0.1'
+
+mod 'erlang',
+  :git => 'git@www-git.prevnet:puppet/mod-garethr-erlang.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'file_concat',
+  :git => 'git@www-git.prevnet:leonardo.rmello/mod-electrical-file_concat.git',
+  :ref => 'dtp-0.1.0'
+
+mod 'filemapper',
+  :git => 'git@www-git.prevnet:puppet/mod-puppet-filemapper.git',
+  :ref => '1.1.4'
+
+mod 'firewall',
+  :git => 'git@www-git.prevnet:/puppet/mod-puppetlabs-firewall.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'inifile',
+  :git => 'git@www-git.prevnet:/puppet/mod-puppetlabs-inifile.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'ntp',
+  :git => 'git@www-git.prevnet:puppet/mod-puppetlabs-ntp.git',
+  :ref => 'dtp-1.0.1'
+
+mod 'ssh',
+  :git => 'git@www-git.prevnet:/puppet/mod-saz-ssh.git',
+  :ref => 'v2.4.0'
+
+mod 'stdlib',
+  :git => 'git@www-git.prevnet:/puppet/mod-puppetlabs-stdlib.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'sudo',
+  :git => 'git@www-git.prevnet:/puppet/mod-saz-sudo.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'sysctl',
+  :git => 'git@www-git.prevnet:puppet/mod-fiddyspence-sysctl.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'wget',
+  :git => 'git@www-git.prevnet:puppet/maestrodev-puppet-wget.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'yamlfile',
+  :git => 'git@www-git.prevnet:puppet/mod-reidmv-yamlfile.git',
+  :ref => '0.2.0'
+
+mod 'dtp_cronallow',
+  :git => 'git@www-git.prevnet:puppet/mod-dtp_cronallow.git',
+  :ref => 'dtp-1.0.0'
+
+mod 'apache',
+  :git => 'git@www-git.prevnet:puppet/mod-puppetlabs-apache.git',
+  :ref => 'dtp-1.2.0'
+
+mod 'mod-dtp_webhook_pandoc_artigos',
+  :git => 'file:////home/users/adriano.vieira/devel/mod-dtp_webhook_pandoc_artigos',
+  :ref => 'webhook_hello'

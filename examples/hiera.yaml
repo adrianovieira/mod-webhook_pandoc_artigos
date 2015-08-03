@@ -1,0 +1,11 @@
+---
+:backends:
+  - yaml
+
+:hierarchy:
+  - "prioridade"
+  - "common"
+  - "local_hiera"
+
+:yaml:
+  :datadir: "%{settings::manifestdir}/hieradata"
