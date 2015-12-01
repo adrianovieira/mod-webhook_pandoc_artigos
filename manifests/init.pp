@@ -64,40 +64,16 @@ class dtp_webhook_pandoc_artigos (
   package { $packages: ensure => present }
 
   if $webhook_wsgi_replace {
-    #  /*
-     file { "webhook_hello":
-       path => "${webhook_docroot}/webhook.wsgi",
-       content => '# -*- coding: utf-8 -*-
-import os, time
-def application(environ, start_response):
-    status = "200 OK"
-    output = "Olá, Webhook em "+ os.uname()[1] +"! <br /><small>"+time.strftime("%d/%h/%Y %H:%M:%S")+"</small>"
+    file { "webhook_hello":
+      path => "${webhook_docroot}/webhook.wsgi",
+      source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello.wsgi"
+    }
 
-    response_headers = [("Content-type", "text/html"),
-                        ("Content-Length", str(len(output)))]
-    start_response(status, response_headers)
+    file { "webhook_hello_flask":
+      path => "${webhook_docroot}/webhook_flask.wsgi",
+      source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello_flask.wsgi"
+    }
 
-    return [output]
-
-        ',
-     }
-     #*/
-
-     /*
-     file { "webhook_hello_flask":
-       path => "${webhook_docroot}/webhook.wsgi",
-       content => '# -*- coding: utf-8 -*-
-import os, time
-from flask import Flask
-app = Flask(__name__)
-
-@app.route("/")
-def hello_world():
-    return "Hello World!"+ os.uname()[1] +"! <br /><small>"+time.strftime("%d/%h/%Y %H:%M:%S")+"</small>"
-
-        ',
-     }
-     */
   }
 
 }
