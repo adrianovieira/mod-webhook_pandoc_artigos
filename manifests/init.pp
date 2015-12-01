@@ -1,5 +1,7 @@
 class dtp_webhook_pandoc_artigos (
-        $webhook_wsgi_replace = false
+        $webhook_wsgi_replace = false,
+        $webhook_service_name = 'webhook-dev.puppet',
+        $webhook_docroot = '/var/www/webhook',
         )
 {
   # verifica suporte a plataforma
@@ -22,9 +24,9 @@ class dtp_webhook_pandoc_artigos (
   # http: WEBHOOK
   include apache
   include 'apache::mod::wsgi'
-  apache::vhost { 'webhook.www-git':
+  apache::vhost { "${webhook_service_name}":
     port                        => '80',
-    docroot                     => '/var/www/webhook',
+    docroot                     => "${webhook_docroot}",
     wsgi_application_group      => '%{GLOBAL}',
     wsgi_daemon_process         => 'wsgi',
     wsgi_daemon_process_options => {
@@ -32,11 +34,11 @@ class dtp_webhook_pandoc_artigos (
       threads      => '15',
       display-name => '%{GROUP}',
     },
-    wsgi_import_script          => '/var/www/webhook/webhook.wsgi',
+    wsgi_import_script          => "${webhook_docroot}/webhook.wsgi",
     wsgi_import_script_options  =>
       { process-group => 'wsgi', application-group => '%{GLOBAL}' },
     wsgi_process_group          => 'wsgi',
-    wsgi_script_aliases         => { '/' => '/var/www/webhook/webhook.wsgi' },
+    wsgi_script_aliases         => { '/' => "${webhook_docroot}/webhook.wsgi" },
   }
 
   $packages = $operatingsystem ? {
@@ -62,9 +64,9 @@ class dtp_webhook_pandoc_artigos (
   package { $packages: ensure => present }
 
   if $webhook_wsgi_replace {
-      /*
+    #  /*
      file { "webhook_hello":
-       path => '/var/www/webhook/webhook.wsgi',
+       path => "${webhook_docroot}/webhook.wsgi",
        content => '# -*- coding: utf-8 -*-
 import os, time
 def application(environ, start_response):
@@ -78,10 +80,12 @@ def application(environ, start_response):
     return [output]
 
         ',
-     } */
+     }
+     #*/
 
+     /*
      file { "webhook_hello_flask":
-       path => "/var/www/webhook/webhook.wsgi",
+       path => "${webhook_docroot}/webhook.wsgi",
        content => '# -*- coding: utf-8 -*-
 import os, time
 from flask import Flask
@@ -93,6 +97,7 @@ def hello_world():
 
         ',
      }
+     */
   }
 
 }
