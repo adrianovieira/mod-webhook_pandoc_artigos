@@ -1,5 +1,6 @@
 class dtp_webhook_pandoc_artigos (
-        $webhook_wsgi_replace = false,
+        $webhook_wsgi_hello = false,
+        $webhook_wsgi_hello_flask = false,
         $webhook_service_name = 'webhook-dev.puppet',
         $webhook_docroot = '/var/www/webhook',
         $dtp_puppetversion_min = '3.8',
@@ -77,14 +78,16 @@ class dtp_webhook_pandoc_artigos (
   }
   package { $packages: ensure => present }
 
-  if $webhook_wsgi_replace {
+  if $webhook_wsgi_hello {
     file { "webhook_hello":
       path => "${webhook_docroot}/webhook.wsgi",
       source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello.wsgi"
     }
+  }
 
+  if $webhook_wsgi_hello_flask {
     file { "webhook_hello_flask":
-      path => "${webhook_docroot}/webhook_flask.wsgi",
+      path => "${webhook_docroot}/webhook.wsgi",
       source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello_flask.wsgi"
     }
 
