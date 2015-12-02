@@ -6,6 +6,7 @@ class dtp_webhook_pandoc_artigos (
         $webhook_script_aliases = '/artigos-2pdf',
         $webhook_pdfdownload_aliases = '/artigos-download',
         $webhook_pdfdownload_aliases_path = '/var/tmp/webhook_tmp',
+        $webhook_markdowntemplate_path = '/var/share/markdown-template/',
         $dtp_puppetversion_min = '3.8',
         $dtp_puppetversion_max = '3.8.4',
         )
@@ -102,11 +103,6 @@ class dtp_webhook_pandoc_artigos (
   if (!(($webhook_wsgi_hello) and ($webhook_wsgi_hello_flask))) {
     $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
 
-    file {"${webhook_docroot}/webhook.cfg":
-      ensure => present,
-      audit => all,
-    }
-
     if(!$file_webhookcfg_exists) {
       package { 'git': ensure => present }
       file { "$webhook_docroot":
@@ -126,6 +122,18 @@ class dtp_webhook_pandoc_artigos (
         source => "${webhook_docroot}/webhook-dist.wsgi"
       }
     }
+
+    file {"${webhook_docroot}/webhook.cfg":
+      ensure => present,
+      audit => all,
+    }
+
+    exec { 'webhook_markdowntemplate':
+      path => '/usr/bin',
+      command => "git clone http://www-git.prevnet/documentos/markdown-template.git ${webhook_markdowntemplate_path}",
+      onlyif => ["test ! -f ${webhook_markdowntemplate_path}/makefile"],
+    }
+
   }
 
 }
