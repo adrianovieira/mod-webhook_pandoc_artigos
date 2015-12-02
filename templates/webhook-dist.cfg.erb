@@ -6,31 +6,31 @@
 # crie o arquivo "webhook.cfg" com o dado especifico
 [enviroment]
 ; production = True: implantacao em ambiente produtivo
-production = False
+production = True
 
 ; gitlab_host: Host para de acesso ao Gitlab
-gitlab_host = http://www-git-tst/
+gitlab_host = http://www-git/
 
 ; gitlab_webhook_user: usuario para conexao ao gitlab_url
-gitlab_webhook_user = admin
+gitlab_webhook_user = <%= @webhook_gitlab_user_name %>
 
 ; gitlab_webhook_pass: senha para o usuario de conexao ao gitlab_url
-gitlab_webhook_pass = password
+gitlab_webhook_pass = <%= @webhook_gitlab_user_pass %>
 
 ; gitlab_url: URL para de acesso ao repositório no Gitlab
-gitlab_url = http://www-git-tst/documentos/artigos
+gitlab_url = http://www-git/documentos/artigos
 
 ; gitlab_url: sub-URL para download de PDF gerados (igual ao "Alias" no vhttpd)
-gitlab_url_download = artigos-download
+gitlab_url_download = <%= @webhook_pdfdownload_aliases %>
 
 ; gitlab_target_branch: branch unica para o webhook
 gitlab_target_branch = master
 
 ; path_tmp: Diretorio temporário para extrair e converter artigo
-path_tmp = /var/tmp/webhook_tmp
+path_tmp = <%= @webhook_pdfdownload_aliases_path %>
 
 ; template_path: caminho para o template "markdown-template"
-path_template = /var/share/markdown-template/
+path_template = <%= @webhook_markdowntemplate_path %>
 
 ; pandoc: caminho para o binário pandoc - parser para conversao de arquivos .md
 pandoc = /usr/bin/pandoc

@@ -7,6 +7,8 @@ class dtp_webhook_pandoc_artigos (
         $webhook_pdfdownload_aliases = '/artigos-download',
         $webhook_pdfdownload_aliases_path = '/var/tmp/webhook_tmp',
         $webhook_markdowntemplate_path = '/var/share/markdown-template/',
+        $webhook_gitlab_user_name = hiera('webhook_gitlab_user_name','admin'),
+        $webhook_gitlab_user_pass = hiera('webhook_gitlab_user_pass','secret'),
         $dtp_puppetversion_min = '3.8',
         $dtp_puppetversion_max = '3.8.4',
         )
