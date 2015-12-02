@@ -1,0 +1,51 @@
+# webhook.cfg: Managed by puppet.
+#
+# ** MANTENHA ESSE ARQUIVO INTACTO **
+#
+# caso necessite personalizar algum dado
+# crie o arquivo "webhook.cfg" com o dado especifico
+[enviroment]
+; production = True: implantacao em ambiente produtivo
+production = False
+
+; gitlab_host: Host para de acesso ao Gitlab
+gitlab_host = http://www-git-tst/
+
+; gitlab_webhook_user: usuario para conexao ao gitlab_url
+gitlab_webhook_user = admin
+
+; gitlab_webhook_pass: senha para o usuario de conexao ao gitlab_url
+gitlab_webhook_pass = password
+
+; gitlab_url: URL para de acesso ao repositório no Gitlab
+gitlab_url = http://www-git-tst/documentos/artigos
+
+; gitlab_url: sub-URL para download de PDF gerados (igual ao "Alias" no vhttpd)
+gitlab_url_download = artigos-download
+
+; gitlab_target_branch: branch unica para o webhook
+gitlab_target_branch = master
+
+; path_tmp: Diretorio temporário para extrair e converter artigo
+path_tmp = /var/tmp/webhook_tmp
+
+; template_path: caminho para o template "markdown-template"
+path_template = /var/share/markdown-template/
+
+; pandoc: caminho para o binário pandoc - parser para conversao de arquivos .md
+pandoc = /usr/bin/pandoc
+
+; make: caminho para o utilitario make - para o script de conversao
+make = /usr/bin/make
+
+; DEBUG = True: para depuracao em desenvolvimento
+DEBUG = False
+
+; DEBUG_HOST: se DEBUG, IP onde será disponível o serviço
+DEBUG_HOST = 0.0.0.0
+
+; DEBUG_PORT: se DEBUG, PORT (porta) onde será disponível o serviço
+DEBUG_PORT = 5000
+
+; DEBUG_LEVEL: se DEBUG, nivel de debug desejado (0=Warning, 1=Error)
+DEBUG_LEVEL = 0

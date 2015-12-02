@@ -123,8 +123,11 @@ class dtp_webhook_pandoc_artigos (
       }
     }
 
-    file {"${webhook_docroot}/webhook.cfg":
-      ensure => present,
+    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
+    file { "webhook.cfg":
+      path => "${webhook_docroot}/webhook.cfg",
+      content => template("dtp_webhook_pandoc_artigos/webhook-dist.cfg.erb"),
+      backup => ".puppet-bak_${timestamp}",
       audit => all,
     }
 
