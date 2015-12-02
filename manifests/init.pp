@@ -3,7 +3,7 @@ class dtp_webhook_pandoc_artigos (
         $webhook_wsgi_hello_flask = false,
         $webhook_service_name = 'webhook-dev.puppet',
         $webhook_docroot = '/var/www/webhook',
-        $webhook_script_aliases = '/',
+        $webhook_script_aliases = '/artigos-2pdf',
         $dtp_puppetversion_min = '3.8',
         $dtp_puppetversion_max = '3.8.4',
         )
