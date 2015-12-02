@@ -4,6 +4,8 @@ class dtp_webhook_pandoc_artigos (
         $webhook_service_name = 'webhook-dev.puppet',
         $webhook_docroot = '/var/www/webhook',
         $webhook_script_aliases = '/artigos-2pdf',
+        $webhook_pdfdownload_aliases = '/artigos-download',
+        $webhook_pdfdownload_aliases_path = '/var/tmp/webhook_tmp',
         $dtp_puppetversion_min = '3.8',
         $dtp_puppetversion_max = '3.8.4',
         )
@@ -43,6 +45,9 @@ class dtp_webhook_pandoc_artigos (
   apache::vhost { "${webhook_service_name}":
     port                        => '80',
     docroot                     => "${webhook_docroot}",
+    aliases                     => [{ alias => $webhook_pdfdownload_aliases,
+                                      path => $webhook_pdfdownload_aliases_path,
+                                    }],
     wsgi_application_group      => '%{GLOBAL}',
     wsgi_daemon_process         => 'wsgi',
     wsgi_daemon_process_options => {
@@ -94,6 +99,33 @@ class dtp_webhook_pandoc_artigos (
     }
   }
 
+  if (!(($webhook_wsgi_hello) and ($webhook_wsgi_hello_flask))) {
+    $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
 
+    file {"${webhook_docroot}/webhook.cfg":
+      ensure => present,
+      audit => all,
+    }
+
+    if(!$file_webhookcfg_exists) {
+      package { 'git': ensure => present }
+      file { "$webhook_docroot":
+        path => "${webhook_docroot}",
+        ensure => absent,
+        force => true,
+        backup => false,
+      }
+      ->
+      exec { 'webhook_deploy':
+        path => '/usr/bin',
+        command => "git clone http://www-git.prevnet/hook-apps/webhook-pandoc-artigos.git ${webhook_docroot}",
+        onlyif => ["test ! -f ${webhook_docroot}/webhook.cfg", "test ! -f ${webhook_docroot}/webhook.py"],
+      }->
+      file { "webhook_deploy":
+        path => "${webhook_docroot}/webhook.wsgi",
+        source => "${webhook_docroot}/webhook-dist.wsgi"
+      }
+    }
+  }
 
 }
