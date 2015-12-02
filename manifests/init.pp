@@ -3,6 +3,7 @@ class dtp_webhook_pandoc_artigos (
         $webhook_wsgi_hello_flask = false,
         $webhook_service_name = 'webhook-dev.puppet',
         $webhook_docroot = '/var/www/webhook',
+        $webhook_script_aliases = '/',
         $dtp_puppetversion_min = '3.8',
         $dtp_puppetversion_max = '3.8.4',
         )
@@ -53,7 +54,7 @@ class dtp_webhook_pandoc_artigos (
     wsgi_import_script_options  =>
       { process-group => 'wsgi', application-group => '%{GLOBAL}' },
     wsgi_process_group          => 'wsgi',
-    wsgi_script_aliases         => { '/' => "${webhook_docroot}/webhook.wsgi" },
+    wsgi_script_aliases         => { "${webhook_script_aliases}" => "${webhook_docroot}/webhook.wsgi" },
   }
 
   $packages = $operatingsystem ? {
@@ -91,7 +92,8 @@ class dtp_webhook_pandoc_artigos (
       path => "${webhook_docroot}/webhook.wsgi",
       source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello_flask.wsgi"
     }
-
   }
+
+
 
 }
