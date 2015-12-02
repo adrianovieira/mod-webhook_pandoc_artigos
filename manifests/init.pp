@@ -61,7 +61,8 @@ class dtp_webhook_pandoc_artigos (
                                         "texlive",
                                         "texlive-full"
                                       ],
-    /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc", "python-pip",
+    /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc",
+                                        "python-pip", "python-flask",
                                         "texlive",
                                         "texlive-texlive.infra",
                                         "texlive-framed",
