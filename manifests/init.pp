@@ -11,6 +11,7 @@ class webhook_pandoc_artigos (
         $webhook_gitlab_user_pass = hiera('webhook_gitlab_user_pass','secret'),
         $dtp_puppetversion_min = '3.6.2',
         $dtp_puppetversion_max = '3.8.4',
+        $proxy_environment = '',
         )
 {
   /*
@@ -83,7 +84,13 @@ class webhook_pandoc_artigos (
                                         "texlive-polyglossia"
                                       ],
   }
-  package { $packages: ensure => present }
+  package { $packages: ensure => present } ->
+  exec {'pyapi-gitlab':
+    path => '/bin',
+    command => 'pip install pyapi-gitlab',
+    onlyif => 'test ! `pip list|grep pyapi-gitlab|wc -l` -eq 1',
+    environment => $proxy_environment,
+  }
 
   if $webhook_wsgi_hello {
     file { "webhook_hello":
@@ -101,6 +108,7 @@ class webhook_pandoc_artigos (
 
   if (!(($webhook_wsgi_hello) and ($webhook_wsgi_hello_flask))) {
     $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
+    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
     if(!$file_webhookcfg_exists) {
       package { 'git': ensure => present }
@@ -122,12 +130,11 @@ class webhook_pandoc_artigos (
       }
     }
 
-    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
     file { "webhook.cfg":
       path => "${webhook_docroot}/webhook.cfg",
       content => template("webhook_pandoc_artigos/webhook-dist.cfg.erb"),
       backup => ".puppet-bak_${timestamp}",
-      audit => all,
+      audit => content,
     }
 
     exec { 'webhook_markdowntemplate':
