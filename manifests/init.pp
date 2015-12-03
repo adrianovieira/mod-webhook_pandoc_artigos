@@ -1,4 +1,4 @@
-class dtp_webhook_pandoc_artigos (
+class webhook_pandoc_artigos (
         $webhook_wsgi_hello = false,
         $webhook_wsgi_hello_flask = false,
         $webhook_service_name = 'webhook-dev.puppet',
@@ -91,14 +91,14 @@ class dtp_webhook_pandoc_artigos (
   if $webhook_wsgi_hello {
     file { "webhook_hello":
       path => "${webhook_docroot}/webhook.wsgi",
-      source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello.wsgi"
+      source => "puppet:///modules/webhook_pandoc_artigos/webhook-hello.wsgi"
     }
   }
 
   if $webhook_wsgi_hello_flask {
     file { "webhook_hello_flask":
       path => "${webhook_docroot}/webhook.wsgi",
-      source => "puppet:///modules/dtp_webhook_pandoc_artigos/webhook-hello_flask.wsgi"
+      source => "puppet:///modules/webhook_pandoc_artigos/webhook-hello_flask.wsgi"
     }
   }
 
@@ -128,7 +128,7 @@ class dtp_webhook_pandoc_artigos (
     $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
     file { "webhook.cfg":
       path => "${webhook_docroot}/webhook.cfg",
-      content => template("dtp_webhook_pandoc_artigos/webhook-dist.cfg.erb"),
+      content => template("webhook_pandoc_artigos/webhook-dist.cfg.erb"),
       backup => ".puppet-bak_${timestamp}",
       audit => all,
     }

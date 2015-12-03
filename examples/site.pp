@@ -54,7 +54,7 @@ node default {
   }
 
   #include webhook_pandoc_artigos {$webhook_wsgi_replace = true}
-  class {'dtp_webhook_pandoc_artigos':
+  class {'webhook_pandoc_artigos':
       webhook_wsgi_replace => true,
   }
 

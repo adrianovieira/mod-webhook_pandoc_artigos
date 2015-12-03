@@ -114,6 +114,6 @@ mod 'apache',
   :git => 'git@www-git.prevnet:puppet/mod-puppetlabs-apache.git',
   :ref => 'dtp-1.2.0'
 
-mod 'mod-dtp_webhook_pandoc_artigos',
-  :git => 'file:////home/users/adriano.vieira/devel/mod-dtp_webhook_pandoc_artigos',
+mod 'mod-webhook_pandoc_artigos',
+  :git => 'file:////home/users/adriano.vieira/devel/mod-webhook_pandoc_artigos',
   :ref => 'webhook_hello'
