@@ -11,7 +11,7 @@ class webhook_pandoc_artigos (
         $webhook_gitlab_user_pass = hiera('webhook_gitlab_user_pass','secret'),
         $dtp_puppetversion_min = '3.6.2',
         $dtp_puppetversion_max = '3.8.4',
-        $proxy_environment = '',
+        $exec_environment = '',
         )
 {
   /*
@@ -28,7 +28,7 @@ class webhook_pandoc_artigos (
 
   # verifica suporte a plataforma
   case $::osfamily {
-    'RedHat': {
+    'RedHat': { # operating system 'RedHat', 'CentOS'
       if versioncmp($::operatingsystemmajrelease, '6') < 0 {
         fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
       }
@@ -89,7 +89,7 @@ class webhook_pandoc_artigos (
     path => '/bin',
     command => 'pip install pyapi-gitlab',
     onlyif => 'test ! `pip list|grep pyapi-gitlab|wc -l` -eq 1',
-    environment => $proxy_environment,
+    environment => $exec_environment,
   }
 
   if $webhook_wsgi_hello {
