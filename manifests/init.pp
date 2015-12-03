@@ -29,18 +29,18 @@ class webhook_pandoc_artigos (
   case $::osfamily {
     'RedHat': {
       if versioncmp($::operatingsystemmajrelease, '6') < 0 {
-        $msg = "Plataforma ${::operatingsystem}-${::operatingsystemmajrelease} não suportada."
+        $msg = "operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported"
         fail("mod webhook_pandoc_artigos: ${msg}")
       }
     }
     default: {
-      $msg = "Plataforma ${::osfamily} não suportada."
+      $msg = "operating system ${::osfamily} is not supported"
       fail("mod webhook_pandoc_artigos: ${msg}")
     }
   }
 
-  $msg = "Plataforma ${::osfamily}-${::operatingsystemrelease} suportada. "
-  notice("mod webhook_pandoc_artigos: ${msg}")
+  $msg = "Operating system ${::osfamily}-${::operatingsystemrelease} supported. "
+  info("mod webhook_pandoc_artigos: ${msg}")
 
   # http: WEBHOOK
   include apache
@@ -71,7 +71,7 @@ class webhook_pandoc_artigos (
                                         "texlive-full"
                                       ],
     /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc",
-                                        "python-pip", "python-flask",
+                                        "python-pip", "python-flask", "python-requests",
                                         "texlive",
                                         "texlive-texlive.infra",
                                         "texlive-framed",
