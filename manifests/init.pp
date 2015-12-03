@@ -9,8 +9,9 @@ class webhook_pandoc_artigos (
         $webhook_markdowntemplate_path = '/var/share/markdown-template/',
         $webhook_gitlab_user_name = hiera('webhook_gitlab_user_name','admin'),
         $webhook_gitlab_user_pass = hiera('webhook_gitlab_user_pass','secret'),
-        $dtp_puppetversion_min = '3.8',
+        $dtp_puppetversion_min = '3.6.2',
         $dtp_puppetversion_max = '3.8.4',
+        $proxy_environment = '',
         )
 {
   /*
@@ -19,8 +20,8 @@ class webhook_pandoc_artigos (
       dtp_puppetversion_min => versão minima suportada
       dtp_puppetversion_max => versão máxima suportada
   */
-  if (!(versioncmp($puppetversion, $dtp_puppetversion_min) > 0 and versioncmp($dtp_puppetversion_max, $puppetversion) >= 0))  {
-    fail("webhook_pandoc_artigos: puppet version ${puppetversion} is not supported")
+  if (!(versioncmp($puppetversion, $dtp_puppetversion_min) >= 0 and versioncmp($dtp_puppetversion_max, $puppetversion) >= 0))  {
+    fail("webhook_pandoc_artigos: puppet version ${puppetversion} is not supported. Use: ${dtp_puppetversion_min} thru ${dtp_puppetversion_max}.")
   } else {
     info("puppet version ${puppetversion} supported")
   }
@@ -29,18 +30,15 @@ class webhook_pandoc_artigos (
   case $::osfamily {
     'RedHat': {
       if versioncmp($::operatingsystemmajrelease, '6') < 0 {
-        $msg = "operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported"
-        fail("mod webhook_pandoc_artigos: ${msg}")
+        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
       }
     }
     default: {
-      $msg = "operating system ${::osfamily} is not supported"
-      fail("mod webhook_pandoc_artigos: ${msg}")
+      fail("mod webhook_pandoc_artigos: operating system ${::osfamily} is not supported")
     }
   }
 
-  $msg = "Operating system ${::osfamily}-${::operatingsystemrelease} supported. "
-  info("mod webhook_pandoc_artigos: ${msg}")
+  info("Operating system ${::osfamily}-${::operatingsystemrelease} supported")
 
   # http: WEBHOOK
   include apache
@@ -86,7 +84,13 @@ class webhook_pandoc_artigos (
                                         "texlive-polyglossia"
                                       ],
   }
-  package { $packages: ensure => present }
+  package { $packages: ensure => present } ->
+  exec {'pyapi-gitlab':
+    path => '/bin',
+    command => 'pip install pyapi-gitlab',
+    onlyif => 'test ! `pip list|grep pyapi-gitlab|wc -l` -eq 1',
+    environment => $proxy_environment,
+  }
 
   if $webhook_wsgi_hello {
     file { "webhook_hello":
@@ -104,6 +108,7 @@ class webhook_pandoc_artigos (
 
   if (!(($webhook_wsgi_hello) and ($webhook_wsgi_hello_flask))) {
     $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
+    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
     if(!$file_webhookcfg_exists) {
       package { 'git': ensure => present }
@@ -125,12 +130,11 @@ class webhook_pandoc_artigos (
       }
     }
 
-    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
     file { "webhook.cfg":
       path => "${webhook_docroot}/webhook.cfg",
       content => template("webhook_pandoc_artigos/webhook-dist.cfg.erb"),
       backup => ".puppet-bak_${timestamp}",
-      audit => all,
+      audit => content,
     }
 
     exec { 'webhook_markdowntemplate':
