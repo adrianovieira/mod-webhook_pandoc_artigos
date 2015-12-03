@@ -9,7 +9,7 @@ class webhook_pandoc_artigos (
         $webhook_markdowntemplate_path = '/var/share/markdown-template/',
         $webhook_gitlab_user_name = hiera('webhook_gitlab_user_name','admin'),
         $webhook_gitlab_user_pass = hiera('webhook_gitlab_user_pass','secret'),
-        $dtp_puppetversion_min = '3.8',
+        $dtp_puppetversion_min = '3.6.2',
         $dtp_puppetversion_max = '3.8.4',
         )
 {
@@ -19,8 +19,8 @@ class webhook_pandoc_artigos (
       dtp_puppetversion_min => versão minima suportada
       dtp_puppetversion_max => versão máxima suportada
   */
-  if (!(versioncmp($puppetversion, $dtp_puppetversion_min) > 0 and versioncmp($dtp_puppetversion_max, $puppetversion) >= 0))  {
-    fail("webhook_pandoc_artigos: puppet version ${puppetversion} is not supported")
+  if (!(versioncmp($puppetversion, $dtp_puppetversion_min) >= 0 and versioncmp($dtp_puppetversion_max, $puppetversion) >= 0))  {
+    fail("webhook_pandoc_artigos: puppet version ${puppetversion} is not supported. Use: ${dtp_puppetversion_min} thru ${dtp_puppetversion_max}.")
   } else {
     info("puppet version ${puppetversion} supported")
   }
@@ -29,18 +29,15 @@ class webhook_pandoc_artigos (
   case $::osfamily {
     'RedHat': {
       if versioncmp($::operatingsystemmajrelease, '6') < 0 {
-        $msg = "operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported"
-        fail("mod webhook_pandoc_artigos: ${msg}")
+        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
       }
     }
     default: {
-      $msg = "operating system ${::osfamily} is not supported"
-      fail("mod webhook_pandoc_artigos: ${msg}")
+      fail("mod webhook_pandoc_artigos: operating system ${::osfamily} is not supported")
     }
   }
 
-  $msg = "Operating system ${::osfamily}-${::operatingsystemrelease} supported. "
-  info("mod webhook_pandoc_artigos: ${msg}")
+  info("Operating system ${::osfamily}-${::operatingsystemrelease} supported")
 
   # http: WEBHOOK
   include apache
