@@ -1,5 +1,5 @@
 {
-  "name": "mod-webhook_pandoc_artigos",
+  "name": "dataprev-webhook_pandoc_artigos",
   "version": "1.7.0",
   "author": "adriano.vieira at dataprev.gov.br",
   "summary": "Initial setup of webhook-pandoc-artigos application",
