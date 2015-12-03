@@ -11,6 +11,7 @@ Esse módulo tem como dependência (```metadata.json```) os seguintes módulos:
 ```json
 {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
 { "name": "puppetlabs-apache", "version_range": ">= 1.2.0" }
+```
 
 ## Limitações
 
