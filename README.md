@@ -9,7 +9,6 @@ Esse módulo tem como dependência (```metadata.json```) os seguintes módulos:
 - módulo Puppet Apache (+wsgi,python);
 
 ```json
-{"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
 { "name": "puppetlabs-apache", "version_range": ">= 1.2.0" }
 ```
 
