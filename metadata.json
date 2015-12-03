@@ -1,5 +1,5 @@
 {
-  "name": "mod-webhook_pandoc_artigos",
+  "name": "dataprev-webhook_pandoc_artigos",
   "version": "1.7.0",
   "author": "adriano.vieira at dataprev.gov.br",
   "summary": "Initial setup of webhook-pandoc-artigos application",
@@ -8,7 +8,6 @@
   "project_page": "http://www-git/hook-apps/mod-webhook_pandoc_artigos",
   "issues_url": "http://www-git/hook-apps/mod-webhook_pandoc_artigos/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    { "name": "puppetlabs-apache", "version_range": ">= 1.2.0" }
+    { "name": "puppetlabs/apache", "version_requirement":">= 1.2.0" }
   ]
 }
