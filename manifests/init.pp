@@ -30,12 +30,12 @@ class webhook_pandoc_artigos (
   case $::operatingsystem {
     'RedHat', 'Centos': { # operating system 'RedHat', 'CentOS'
       if versioncmp($::operatingsystemmajrelease, '6') < 0 {
-        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
+        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported. Use ${::operatingsystem}>=6")
       }
     }
     'Debian': { # operating system Debian like
       if versioncmp($::operatingsystemmajrelease, '8') < 0 {
-        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
+        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported. Use ${::operatingsystem}>=8")
       }
     }
     default: {
