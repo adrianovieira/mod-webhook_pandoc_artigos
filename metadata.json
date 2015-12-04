@@ -1,6 +1,6 @@
 {
   "name": "dataprev-webhook_pandoc_artigos",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "author": "adriano.vieira at dataprev.gov.br",
   "summary": "Initial setup of webhook-pandoc-artigos application",
   "license": "MIT",
@@ -9,5 +9,14 @@
   "issues_url": "http://www-git/hook-apps/mod-webhook_pandoc_artigos/issues",
   "dependencies": [
     { "name": "puppetlabs/apache", "version_requirement":">= 1.2.0" }
+  ],
+  "operatingsystem_support": [
+    { "operatingsystem":["RedHat","CEntOS"],
+      "operatingsystemrelease":[ "6", "7" ]
+    },
+    {
+    "operatingsystem": "Debian",
+    "operatingsystemrelease": [ "8" ]
+    }
   ]
 }
