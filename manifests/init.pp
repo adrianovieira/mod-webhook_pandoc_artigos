@@ -69,12 +69,13 @@ class webhook_pandoc_artigos (
   }
 
   $packages = $operatingsystem ? {
-    /(?i-mx:debian)/               => [ "make", "pandoc",
+    /(?i-mx:debian)/               => [ "make", "pandoc", "pandoc-citeproc",
                                         "texlive",
-                                        "texlive-full"
+                                        #"texlive-full",
+                                        "python-flask", "python-requests",
                                       ],
     /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc",
-                                        "python-pip", "python-flask", "python-requests",
+                                        "python-flask", "python-requests",
                                         "texlive",
                                         "texlive-texlive.infra",
                                         "texlive-framed",
@@ -90,8 +91,9 @@ class webhook_pandoc_artigos (
                                       ],
   }
   package { $packages: ensure => present } ->
+  package { 'python-pip': ensure => present }->
   exec {'pyapi-gitlab':
-    path => '/bin',
+    path => '/usr/bin',
     command => 'pip install pyapi-gitlab',
     onlyif => 'test ! `pip list|grep pyapi-gitlab|wc -l` -eq 1',
     environment => $exec_environment,
