@@ -33,6 +33,11 @@ class webhook_pandoc_artigos (
         fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
       }
     }
+    'Debian': { # operating system Debian like
+      if versioncmp($::operatingsystemmajrelease, '8') < 0 {
+        fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
+      }
+    }
     default: {
       fail("mod webhook_pandoc_artigos: operating system ${::osfamily} is not supported")
     }
