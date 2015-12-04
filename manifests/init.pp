@@ -27,8 +27,8 @@ class webhook_pandoc_artigos (
   }
 
   # verifica suporte a plataforma
-  case $::osfamily {
-    'RedHat': { # operating system 'RedHat', 'CentOS'
+  case $::operatingsystem {
+    'RedHat', 'Centos': { # operating system 'RedHat', 'CentOS'
       if versioncmp($::operatingsystemmajrelease, '6') < 0 {
         fail("mod webhook_pandoc_artigos: operating system version ${::operatingsystem}-${::operatingsystemmajrelease} is not supported")
       }
