@@ -106,7 +106,7 @@ class webhook_pandoc_artigos (
     }
   }
 
-  if (!(($webhook_wsgi_hello) and ($webhook_wsgi_hello_flask))) {
+  if (!(($webhook_wsgi_hello) or ($webhook_wsgi_hello_flask))) {
     $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
     $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
