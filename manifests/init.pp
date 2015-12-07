@@ -1,5 +1,6 @@
 class webhook_pandoc_artigos (
         $webhook_service_name = 'webhook-dev.puppet',
+        $webhook_service_name_aliases = 'webhook-dev',
         $webhook_docroot = '/var/www/webhook',
         $webhook_script_aliases = '/artigos-2pdf',
         $webhook_pdfdownload_aliases = '/artigos-download',
@@ -49,6 +50,7 @@ class webhook_pandoc_artigos (
   include apache
   include 'apache::mod::wsgi'
   apache::vhost { "${webhook_service_name}":
+    serveraliases => ${webhook_service_name_aliases},  
     port                        => '80',
     docroot                     => "${webhook_docroot}",
     aliases                     => [{ alias => $webhook_pdfdownload_aliases,
@@ -69,9 +71,8 @@ class webhook_pandoc_artigos (
   }
 
   $packages = $operatingsystem ? {
-    /(?i-mx:debian)/               => [ "make", "pandoc", "pandoc-citeproc",
-                                        "texlive",
-                                        #"texlive-full",
+    /(?i-mx:debian)/               => [ "make",
+                                        "texlive-full",
                                         "python-flask", "python-requests",
                                       ],
     /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc",
@@ -90,9 +91,47 @@ class webhook_pandoc_artigos (
                                         "texlive-polyglossia"
                                       ],
   }
+
+  # dados específicos por plataforma
+  case $::operatingsystem {
+    'RedHat', 'Centos': { # operating system 'RedHat', 'CentOS'
+      $apache_user = 'apache'
+      $apache_group = 'apache'
+    }
+    'Debian': { # operating system Debian like
+      $apache_user = 'www-data'
+      $apache_group = 'www-data'
+      package { 'wget': ensure => present }->
+      exec {'pandoc_get':
+        path => '/usr/bin',
+        command => 'wget https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-1-amd64.deb -v',
+        onlyif => [ 'test ! `/usr/bin/dpkg-query -W --showformat \'${Status} ${Package} ${Version}\n\' pandoc`',
+                    "test ! -f /tmp/pandoc-1.13.2-1-amd64.deb"],
+        environment => $exec_environment,
+      }->
+      exec {'pandoc_install':
+        path => '/usr/bin',
+        command => 'dpkg -i pandoc-1.13.2-1-amd64.deb',
+        onlyif => 'test ! `/usr/bin/dpkg-query -W --showformat \'${Status} ${Package} ${Version}\n\' pandoc`',
+        environment => 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      }
+    }
+  }
+
+  # create directory tree if necessary
+  exec { 'create_dirtree':
+    command => "/bin/mkdir -p ${webhook_docroot} ${webhook_pdfdownload_aliases_path} ${webhook_markdowntemplate_path}",
+  }->
+  file { "webhook_pdfdownload_aliases_path":
+    path => "${webhook_pdfdownload_aliases_path}",
+    ensure => directory,
+    owner => $apache_user,
+    group => $apache_group,
+  }
+
   package { $packages: ensure => present } ->
   package { 'python-pip': ensure => present }->
-  exec {'pyapi-gitlab':
+  exec {'pyapi-gitlab_install':
     path => '/usr/bin',
     command => 'pip install pyapi-gitlab',
     onlyif => 'test ! `pip list|grep pyapi-gitlab|wc -l` -eq 1',
@@ -115,7 +154,6 @@ class webhook_pandoc_artigos (
 
   if (!(($webhook_wsgi_hello) or ($webhook_wsgi_hello_flask))) {
     $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
-    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
     if(!$file_webhookcfg_exists) {
       package { 'git': ensure => present }
@@ -137,6 +175,7 @@ class webhook_pandoc_artigos (
       }
     }
 
+    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
     file { "webhook.cfg":
       path => "${webhook_docroot}/webhook.cfg",
       content => template("webhook_pandoc_artigos/webhook-dist.cfg.erb"),
