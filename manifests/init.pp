@@ -1,5 +1,6 @@
 class webhook_pandoc_artigos (
         $webhook_service_name = 'webhook-dev.puppet',
+        $webhook_service_name_aliases = 'webhook-dev',
         $webhook_docroot = '/var/www/webhook',
         $webhook_script_aliases = '/artigos-2pdf',
         $webhook_pdfdownload_aliases = '/artigos-download',
@@ -49,6 +50,7 @@ class webhook_pandoc_artigos (
   include apache
   include 'apache::mod::wsgi'
   apache::vhost { "${webhook_service_name}":
+    serveraliases => ${webhook_service_name_aliases},  
     port                        => '80',
     docroot                     => "${webhook_docroot}",
     aliases                     => [{ alias => $webhook_pdfdownload_aliases,
@@ -70,8 +72,7 @@ class webhook_pandoc_artigos (
 
   $packages = $operatingsystem ? {
     /(?i-mx:debian)/               => [ "make",
-                                        "texlive",
-                                        #"texlive-full",
+                                        "texlive-full",
                                         "python-flask", "python-requests",
                                       ],
     /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc",
@@ -120,10 +121,6 @@ class webhook_pandoc_artigos (
   # create directory tree if necessary
   exec { 'create_dirtree':
     command => "/bin/mkdir -p ${webhook_docroot} ${webhook_pdfdownload_aliases_path} ${webhook_markdowntemplate_path}",
-    onlyif => [ "test ! -d ${webhook_docroot}",
-                "test ! -d ${webhook_pdfdownload_aliases_path}",
-                "test ! -d ${webhook_markdowntemplate_path}",
-              ],
   }->
   file { "webhook_pdfdownload_aliases_path":
     path => "${webhook_pdfdownload_aliases_path}",
