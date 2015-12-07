@@ -40,6 +40,7 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
 ```puppet
 class { 'webhook_pandoc_artigos':
         $webhook_service_name = 'webhook-dev.puppet',
+        $webhook_service_name_aliases = 'webhook-dev',
         $webhook_docroot = '/var/www/webhook',
         $webhook_script_aliases = '/artigos-2pdf',
         $webhook_pdfdownload_aliases = '/artigos-download',
@@ -49,7 +50,7 @@ class { 'webhook_pandoc_artigos':
         $webhook_gitlab_user_pass = hiera('webhook_gitlab_user_pass','secret'),
         $dtp_puppetversion_min = '3.6.2',
         $dtp_puppetversion_max = '3.8.4',
-        $exec_environment = '', # environment for exec
+        $exec_environment = undef, # environment for exec
         $webhook_wsgi_hello = false,  # initial setup test (hello, world)
         $webhook_wsgi_hello_flask = false, # initial setup test (hello, world by flask)
       }
