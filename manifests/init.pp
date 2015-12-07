@@ -50,7 +50,7 @@ class webhook_pandoc_artigos (
   include apache
   include 'apache::mod::wsgi'
   apache::vhost { "${webhook_service_name}":
-    serveraliases => "${webhook_service_name_aliases}",  
+    serveraliases => "${webhook_service_name_aliases}",
     port                        => '80',
     docroot                     => "${webhook_docroot}",
     aliases                     => [{ alias => $webhook_pdfdownload_aliases,
@@ -72,7 +72,8 @@ class webhook_pandoc_artigos (
 
   $packages = $operatingsystem ? {
     /(?i-mx:debian)/               => [ "make",
-                                        "texlive-full",
+                                        "texlive",
+                                        "texlive-xetex",
                                         "python-flask", "python-requests",
                                       ],
     /(?i-mx:centos|fedora|redhat)/ => [ "make", "pandoc", "pandoc-pdf", "pandoc-citeproc",
