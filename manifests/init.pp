@@ -56,6 +56,7 @@ class webhook_pandoc_artigos (
     aliases                     => [{ alias => $webhook_pdfdownload_aliases,
                                       path => $webhook_pdfdownload_aliases_path,
                                     }],
+    options                     => '-Indexes',
     wsgi_application_group      => '%{GLOBAL}',
     wsgi_daemon_process         => 'wsgi',
     wsgi_daemon_process_options => {
