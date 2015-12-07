@@ -157,7 +157,6 @@ class webhook_pandoc_artigos (
 
   if (!(($webhook_wsgi_hello) or ($webhook_wsgi_hello_flask))) {
     $file_webhookcfg_exists = inline_template("<% if File.exist?(\'${webhook_docroot}/webhook.cfg\') -%>true<% end -%>")
-    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
     if(!$file_webhookcfg_exists) {
       package { 'git': ensure => present }
@@ -179,6 +178,7 @@ class webhook_pandoc_artigos (
       }
     }
 
+    $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
     file { "webhook.cfg":
       path => "${webhook_docroot}/webhook.cfg",
       content => template("webhook_pandoc_artigos/webhook-dist.cfg.erb"),
