@@ -69,7 +69,7 @@ class webhook_pandoc_artigos (
   }
 
   $packages = $operatingsystem ? {
-    /(?i-mx:debian)/               => [ "make", "pandoc", "pandoc-citeproc",
+    /(?i-mx:debian)/               => [ "make",
                                         "texlive",
                                         #"texlive-full",
                                         "python-flask", "python-requests",
@@ -90,9 +90,51 @@ class webhook_pandoc_artigos (
                                         "texlive-polyglossia"
                                       ],
   }
+
+  # dados específicos por plataforma
+  case $::operatingsystem {
+    'RedHat', 'Centos': { # operating system 'RedHat', 'CentOS'
+      $apache_user = 'apache'
+      $apache_group = 'apache'
+    }
+    'Debian': { # operating system Debian like
+      $apache_user = 'www-data'
+      $apache_group = 'www-data'
+      package { 'wget': ensure => present }->
+      exec {'pandoc_get':
+        path => '/usr/bin',
+        command => 'wget https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-1-amd64.deb -v',
+        onlyif => [ 'test ! `/usr/bin/dpkg-query -W --showformat \'${Status} ${Package} ${Version}\n\' pandoc`',
+                    "test ! -f /tmp/pandoc-1.13.2-1-amd64.deb"],
+        environment => $exec_environment,
+      }->
+      exec {'pandoc_install':
+        path => '/usr/bin',
+        command => 'dpkg -i pandoc-1.13.2-1-amd64.deb',
+        onlyif => 'test ! `/usr/bin/dpkg-query -W --showformat \'${Status} ${Package} ${Version}\n\' pandoc`',
+        environment => 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      }
+    }
+  }
+
+  # create directory tree if necessary
+  exec { 'create_dirtree':
+    command => "/bin/mkdir -p ${webhook_docroot} ${webhook_pdfdownload_aliases_path} ${webhook_markdowntemplate_path}",
+    onlyif => [ "test ! -d ${webhook_docroot}",
+                "test ! -d ${webhook_pdfdownload_aliases_path}",
+                "test ! -d ${webhook_markdowntemplate_path}",
+              ],
+  }->
+  file { "webhook_pdfdownload_aliases_path":
+    path => "${webhook_pdfdownload_aliases_path}",
+    ensure => directory,
+    owner => $apache_user,
+    group => $apache_group,
+  }
+
   package { $packages: ensure => present } ->
   package { 'python-pip': ensure => present }->
-  exec {'pyapi-gitlab':
+  exec {'pyapi-gitlab_install':
     path => '/usr/bin',
     command => 'pip install pyapi-gitlab',
     onlyif => 'test ! `pip list|grep pyapi-gitlab|wc -l` -eq 1',
