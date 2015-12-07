@@ -1,6 +1,6 @@
 {
   "name": "dataprev-webhook_pandoc_artigos",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "author": "adriano.vieira at dataprev.gov.br",
   "summary": "Initial setup of webhook-pandoc-artigos application",
   "license": "MIT",
