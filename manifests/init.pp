@@ -1,5 +1,8 @@
 class webhook_pandoc_artigos (
-        ) inherits webhook_pandoc_artigos::params
+        $exec_environment = $webhook_pandoc_artigos::params::exec_environment, # environment for exec
+        $webhook_wsgi_hello = $webhook_pandoc_artigos::params::webhook_wsgi_hello,  # initial setup test (hello, world)
+        $webhook_wsgi_hello_flask = $webhook_pandoc_artigos::params::webhook_wsgi_hello_flask, # initial setup test (hello, world by flask)
+      ) inherits webhook_pandoc_artigos::params
 {
   /*
     # verifica puppet suportado
