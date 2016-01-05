@@ -47,7 +47,7 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
 
   1. Dados de configuração:
 
-  Os dados devem ser disponibilizados via ***Hiera (datasources)*** e seguindo a hierarquia estabelecida de separação de dados e código (<http://www-git/puppet/documentos/wikis/puppet#37-separa%C3%A7%C3%A3o-de-dados-e-c%C3%B3digo>). Os parâmetros necessários para configurar a aplicação, são:
+   Os dados devem ser disponibilizados via ***Hiera (datasources)*** e seguindo a hierarquia estabelecida de separação de dados e código (<http://www-git/puppet/documentos/wikis/puppet#37-separa%C3%A7%C3%A3o-de-dados-e-c%C3%B3digo>). Os parâmetros necessários para configurar a aplicação, são:
 
    - **```webhook_service_name```**: nome para acesso ao serviço/aplicação; Host webhook para de acesso ao ao serviço de conversão de arquivos
    - **```webhook_service_name_aliases```**: nome adicionais (apelidos) para acesso ao serviço/aplicação; Alias webhook para de acesso ao ao serviço de conversão de arquivos
