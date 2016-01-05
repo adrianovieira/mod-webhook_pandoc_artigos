@@ -35,7 +35,7 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
 
   A ```webhook_pandoc_artigos``` é a classe base para implementar a aplicação ```webhook_pandoc_artigos```.
 
-1. Parâmetros padrão e forma de uso:
+  1. Parâmetros padrão e forma de uso:
 
     ```puppet
     class { 'webhook_pandoc_artigos':
@@ -45,7 +45,7 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
           }
     ```
 
-1. Dados de configuração:
+  1. Dados de configuração:
 
   Os dados devem ser disponibilizados via ***Hiera (datasources)*** e seguindo a hierarquia estabelecida de separação de dados e código (<http://www-git/puppet/documentos/wikis/puppet#37-separa%C3%A7%C3%A3o-de-dados-e-c%C3%B3digo>). Os parâmetros necessários para configurar a aplicação, são:
 
