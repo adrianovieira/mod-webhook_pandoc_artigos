@@ -15,7 +15,7 @@ Esse módulo tem como dependência (```metadata.json```) os seguintes módulos:
 ## Limitações
 
 1. Plataformas testadas:
-     - ```CEntOS-7``` com ```puppet 3.8.4 (agent)```
+     - ```CEntOS-7``` com ```puppet-3.8.4 (agent)```
 
 ## Funcionalidades
 
