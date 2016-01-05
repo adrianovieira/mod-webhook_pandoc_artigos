@@ -57,7 +57,7 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
    - **```webhook_wsgi_hello```** *(opcional)*: Implementa aplicação python simples (hello, world)
    - **```webhook_wsgi_hello_flask```** *(opcional)*: Implementa aplicação python+flask simples (hello, world by flask)  
 
-   Amostra de parâmetros e respectivos valores para arquivo *Hiera* (exemplo: ```webhook.yaml```)
+   Amostra de parâmetros e respectivos valores em arquivo *Hiera* (exemplo: ```webhook.yaml```)
 
    ```yaml
    webhook_service_name: webhook-hom.puppet
@@ -72,7 +72,7 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
    dtp_puppetversion_min: 3.6.2
    ```
 
-  1. Parâmetros padrão e forma de uso:
+  1. Parâmetros padrão e forma de uso na inicialização da classe:
 
     ```puppet
     class { 'webhook_pandoc_artigos':
