@@ -37,13 +37,13 @@ O detalhamento de melhorias ou correções a serem realizadas podem ser vistas e
 
 1. Parâmetros padrão e forma de uso:
 
-  ```puppet
-  class { 'webhook_pandoc_artigos':
-          $exec_environment = undef, # environment for exec resource (type)
-          $webhook_wsgi_hello = false,  # initial setup test (hello, world)
-          $webhook_wsgi_hello_flask = false, # initial setup test (hello, world by flask)
-        }
-  ```
+    ```puppet
+    class { 'webhook_pandoc_artigos':
+            $exec_environment = undef, # environment for exec resource (type)
+            $webhook_wsgi_hello = false,  # initial setup test (hello, world)
+            $webhook_wsgi_hello_flask = false, # initial setup test (hello, world by flask)
+          }
+    ```
 
 1. Dados de configuração:
 
