@@ -2,6 +2,12 @@
 
 É para realizar deploy de infraestrutura para a aplicação [Webhook](http://www-git/hook-apps/webhook-pandoc-artigos) que realiza a conversão de arquivos *Pandoc/Markdown* para *PDF*.
 
+O módulo instalará vários pacotes de aplicações e por essa razão **necessita de acesso** a repositórios diversos, pois usa os seguintes "providers":
+
+- yum/apt: repositórios atualizados
+- wget: download direto
+- pip: repositórios PyPI
+
 ## Requisitos para o módulo
 
 Esse módulo tem como dependência (```metadata.json```) os seguintes módulos:
